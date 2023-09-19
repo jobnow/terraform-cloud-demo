@@ -1,0 +1,29 @@
+terraform {
+  required_version = "1.5.7"
+
+required_providers {
+  digitalocean = {
+    source = "digitalocean/digitalocean"
+    version = "2.0"
+  }
+}
+}
+
+provider "digitalocean" {
+  token = "dop_v1_8d036bc3dfd28afcb12b5691486308dd116c0b5d2d35109b39fd16ffb13f84ca"
+}
+
+
+resource "digitalocean_kubernetes_cluster" "web" {
+  name    = "web"
+  region  = "nyc1"
+  version = "1.28.2-do.0"
+
+  node_pool {
+    name       = "autoscale-worker-pool"
+    size       = "s-2vcpu-2gb"
+    auto_scale = true
+    min_nodes  = 1
+    max_nodes  = 5
+  }
+}
